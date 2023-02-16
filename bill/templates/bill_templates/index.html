@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index</title>
+    <style>
+        #option{
+            /* display: inline-block;  */
+            height: 600px; 
+            width: 100%;
+            border: 2px solid red;
+            text-align: center;
+            
+        }
+
+        #div1{
+            display: inline-block; 
+            height: 150px; 
+            width: 250px; 
+            border: 2px solid black;
+            margin: 50px;
+            padding-top: 30px; 
+            border-radius: 20%;
+        }
+
+        #div2{
+            display: inline-block; 
+            height: 150px; 
+            width: 250px;
+             border: 2px solid black;
+             margin: 50px;
+             padding-top: 30px;
+             border-radius: 20%;
+        }
+        a{
+            text-decoration: none;
+            color: blueviolet;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="option">
+        <h1 style="padding-top: 150px;">Please select your option:</h1>
+        <div id="div1">
+            <h1><a href="{% url 'add_product:add_product_add' %}">Add product</a></h1>
+        </div>
+        <div id="div2">
+            <h1><a href="{% url 'bill:bill_billing' %}">Product bill</a></h1>
+        </div>
+    </div>
+
+</body>
+</html>

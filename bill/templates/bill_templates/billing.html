@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>billing</title>
+<style>
+    
+    #container{
+            width: 100%;
+            height: auto;
+            border: 2px solid red;
+            margin-bottom: 20px;
+        }
+
+        #container1{
+            width: 100 vh; 
+            height: auto;
+            border: 2px solid blue;
+            text-align: center; 
+            vertical-align: middle;
+            align-items:center ;
+            margin: 10px;
+            font-size: large;
+
+        }
+        #container2{
+            width: 100 vh; 
+            height: auto;
+            border: 2px solid green;
+            text-align: center; 
+            vertical-align: middle;
+            align-items:center ;
+            margin: 10px;
+            font-size: large;
+
+        }
+
+        #listtable{
+            border: 2px solid black; 
+            height: auto; 
+            width: 100%;
+        }
+
+        #invoicetable{
+            border: 2px solid black; 
+            height: auto; 
+            width: 100%;
+        }
+
+        #header{
+            /* border:2px solid black; */
+            grid-area: 1/1/2/8;
+            height: 100px;
+        }
+
+        #header2{
+            
+            height: 100px;
+        }
+
+        thead{
+            font-size: large;
+            font-weight: bold;
+        }
+
+        th,td{
+            border: 1px solid black;
+        }
+
+
+        a{
+            color: black;
+            font-size: 15px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        #menu{
+            float: right;
+            border: 2px solid black;
+            border-radius: 10px;
+            margin-right: 20px;
+        }
+
+
+</style>
+
+</head>
+<body>
+
+<div id="container">  
+               
+    <div id="header">
+        <button id="menu" ><a href="{% url 'bill:bill_index' %}">Main Menu</a></button> 
+        <h1 style="text-align: center;">Product Billing:</h1>    
+    </div>
+        
+    <div id="container1">
+        
+        <table id="listtable">
+            <thead>
+                    <th>Id</th>
+                    <th>Product Name</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Sub Cateory</th>
+                    <th>Quantity</th>
+                    <th>Purchase</th>
+            </thead>
+        </table> 
+        
+    </div>
+    <br />
+    <br />
+    <div id="header2">
+        <h1 style="text-align: center;">Product Invoice:</h1>    
+        <div style="float: right;">
+            <label style="display: inline-block;"><h3>Date of Purchase:</h3></label>
+            <h3 style="display: inline-block; margin-right: 100px;"><label id="ldate"></label></h3>
+            <br />
+        </div>
+        <br />
+    </div>
+    
+
+    <div id="container2">
+
+        <table id="invoicetable">
+            <thead>
+                    <th>Id</th>
+                    <th>Product Name</th>
+                    <th>Description</th>
+                    <th>Selected Quantity</th>
+                    <th>Amount</th>
+                    <th>option</th>
+            </thead>
+        </table>
+        <br />
+        <div style="float: right;">
+            <label style="display: inline-block;"><h3>Total Amount:</h3></label>
+            <h3 style="display: inline-block; margin-right: 100px;"><label id="ltotal"></label></h3>
+            <br />
+            <br />
+            
+            </div>
+        <br /> 
+    <button id="checkout" style="align-content: center; border-radius: 10px; border: 2px solid black;" onclick="return checkout()"><h2>CHECKOUT</h2></button>
+            
+    </div>
+    <br />
+    <br />
+    
+    
+
+</div>
+
+
+
+</body>
+
+<script>
+
+const date = new Date();
+let day = date.getDate();
+let month = date.getMonth() + 1;    //month as a number (0-11)
+let year = date.getFullYear();
+
+// This arrangement can be altered based on how we want the date's format to appear.
+let currentdate = `${day}-${month}-${year}`;
+
+document.getElementById('ldate').innerHTML = currentdate
+
+var totalsum = 0;
+
+    console.log(localStorage.getItem("productlist"))
+
+    newproductlist = localStorage.getItem("productlist");
+    if(newproductlist == null) 
+        {   
+            newproductlist = [];
+            newproduct = [];
+        }
+    else{           
+            console.log(JSON.parse(newproductlist))
+            newproduct= JSON.parse(newproductlist)
+        }
+        
+    console.log("enter if")
+    count= newproduct.length
+        // add products to table id done by for loop given below
+    for (i = 0; i < newproduct.length; i++) 
+    {
+        
+        x = newproduct[i].name;
+              
+        var listtable=document.getElementById('listtable')
+        var add_row= listtable.insertRow()
+
+        cell1=add_row.insertCell(0)
+        cell2=add_row.insertCell(1)
+        cell3=add_row.insertCell(2)
+        cell4=add_row.insertCell(3)
+        cell5=add_row.insertCell(4)
+        cell6=add_row.insertCell(5)
+        cell7=add_row.insertCell(6)
+
+        cell1.innerHTML= newproduct[i].id;
+        cell2.innerHTML= newproduct[i].name;
+        cell3.innerHTML= newproduct[i].description;
+        cell4.innerHTML= newproduct[i].category;
+        cell5.innerHTML= newproduct[i].subcategory;
+        cell6.innerHTML= newproduct[i].quantity;
+    btn=document.createElement('button')
+    btn.innerHTML='Add'
+    btn.addEventListener('click', function purchase(event) 
+    {
+            
+         index=event.target.parentElement.parentElement.rowIndex
+         
+        //console.log(index-1)
+        
+        var k=index-1
+    
+    
+        var invoicetable=document.getElementById('invoicetable')
+        var add_row1= invoicetable.insertRow()
+        cell11=add_row1.insertCell(0)
+        cell22=add_row1.insertCell(1)
+        cell33=add_row1.insertCell(2)
+        cell44=add_row1.insertCell(3)
+        cell55=add_row1.insertCell(4)
+        cell66=add_row1.insertCell(5)
+        
+        cell11.innerHTML= newproduct[k].id;
+        cell22.innerHTML= newproduct[k].name;
+        cell33.innerHTML= newproduct[k].description;
+
+        
+        cell55.innerHTML= 0;  // initialisation when page load
+
+        var maxq = newproduct[k].quantity;
+        console.log(maxq + ":maximum qty")
+       
+
+        input1=document.createElement('input')
+        input1.setAttribute('style', "width:90%")
+        input1.setAttribute('type', "number")
+        input1.setAttribute("min",1)
+        input1.setAttribute('max',maxq)
+        input1.addEventListener('change', function calc_amount(event)
+        {
+            console.log("entered fn")
+            qnty=event.target.value
+            if(qnty<1||qnty>maxq)
+            {
+                input1.setAttribute('placeholder', "out of range")
+                cell55.innerHTML= 0;
+            }
+            else if(qnty===""||qnty===null)
+            {
+                input1.setAttribute('placeholder', "enter valid value")
+                cell55.innerHTML= 0;   
+            }
+            else
+            {
+                calc_amount_var= (newproduct[k].amount)*(parseInt(qnty))
+                cell55.innerHTML= calc_amount_var;
+            }
+      
+        
+            totalsum = totalsum + calc_amount_var;
+            document.getElementById('ltotal').innerHTML = totalsum
+        })
+         
+        cell44.appendChild(input1)      
+        
+        
+            
+        
+        pointer=0;
+        del_array=[];
+
+        delete_btn=document.createElement('button')
+        delete_btn.innerHTML='Delete'
+        delete_btn.addEventListener('click', function delete_fn(event) 
+        {
+            
+            new_index=event.target.parentElement.parentElement.rowIndex
+         
+            //console.log(new_index)
+        
+            var m = new_index
+            
+            document.getElementById("invoicetable").deleteRow(m);
+            del_list = event.target.parentElement.parentElement.childNodes
+            console.log(del_list[1].innerHTML+' :at delete fn')
+
+
+
+            row_amount= del_list[4].innerHTML
+            console.log(row_amount + 'amount')
+            totalsum = totalsum - row_amount;
+            document.getElementById('ltotal').innerHTML = totalsum
+
+
+            
+            //del_array[pointer] = del_list[1].innerHTML
+            //pointer++;
+
+        
+        row_table=document.getElementById('listtable')
+        row_list = row_table.rows
+        
+        for(var ind=1; ind<=count; ind++)
+        {
+        //console.log(count)
+        row_name1= row_list[ind].childNodes[1].innerHTML
+        // console.log(row_name1+' :name list')
+
+        if(row_name1==del_list[1].innerHTML)
+        {
+        
+        //console.log('entered if statement')
+        row_name= row_list[ind].childNodes[1].innerHTML
+        console.log(row_name+' :name list deleted')
+        row_button_column= row_list[ind].childNodes[6]
+        //console.log(row_button_column+':column')
+        //row_button_it = row_button_column.innerText
+        //console.log(row_button_it+ ' :button innerText')
+        //row_button_ih = row_button_column.innerHTML
+        //console.log(row_button_ih+ ' :button innerHTML')
+
+        
+        
+        //console.log(row_button_column.children[0])
+        //console.log("k")
+
+        row_button_column_children = row_button_column.children[0]
+        row_button_column_children.removeAttribute('disabled')
+        //console.log('row_button_column_children')      
+        //console.log(row_button_column_children.getAttribute('disabled')+':button enabled')  // add button parentelement enabled once row deleted
+
+       
+
+        }
+        }
+        
+            
+        })
+        cell66.appendChild(delete_btn)
+
+        row_table=document.getElementById('listtable')
+        row_list = row_table.rows
+        
+        //for(var ind=1; ind<=count; ind++)
+        //{
+        //console.log(count)
+        //row_name1= row_list[index].childNodes[1].innerHTML
+        // console.log(row_name1+' :name list')
+        
+       // {
+              
+        row_name= row_list[index].childNodes[1].innerHTML
+        console.log(row_name+' :name list added')
+        row_button_column= row_list[index].childNodes[6]
+        console.log(row_button_column.children[0])
+        //console.log("m start")
+
+        row_button_column_children = row_button_column.children[0]
+        row_button_column_children.setAttribute('disabled','true')
+        //console.log('row_button_column_children')
+       
+        //console.log(row_button_column_children.getAttribute('disabled')+"button disabled")
+        //console.log("m_end")
+
+      //  }
+      //  }
+
+    } )
+
+    cell7.appendChild(btn)
+        
+
+    }
+function checkout()
+{
+    var newproduct;
+    var tableinvoice = document.getElementById("invoicetable");
+    //var tbodyRowCount = tableinvoice.tBodies[0].rows.length;
+    var tr = tableinvoice.getElementsByTagName("tr");
+    trlength = tr.length;
+    //alert(trlength);
+    if((trlength-1)==0)
+    {
+        document.getElementById('ltotal').innerHTML = 0;
+    }
+    else
+    { 
+         //existinglist = localStorage.getItem("productlist");
+         
+         var existinglist = localStorage.getItem("productlist");
+         
+         
+        if(existinglist == null) 
+            {   
+            existingtlist = [];
+            
+            }
+           
+        console.log("hello")   
+        newproduct= JSON.parse(existinglist)
+        
+        console.log(newproduct)
+        for (i = 0; i < newproduct.length; i++) 
+            {
+                xname = newproduct[i].name;
+                console.log(xname)
+
+                for(invoice_count=0;invoice_count<trlength-1;invoice_count++)
+                {   
+                    
+                    var trinvoice = tableinvoice.getElementsByTagName("tr")
+                    var tdinvoice = trinvoice[invoice_count+1].getElementsByTagName("td")
+                    var td_name = tdinvoice[1].innerHTML;
+                    console.log(td_name)
+                    var td_quantity = tdinvoice[3];
+                    td_text = td_quantity.childNodes[0].value
+                    
+                    if(xname==td_name)
+                    {   console.log(xname + "name" + td_text +'input qnty value')
+                        console.log(newproduct[i].quantity + 'qnty')
+                        console.log(td_text + 'td qnty')
+                        newproduct[i].quantity = newproduct[i].quantity - td_text
+                        console.log(newproduct[i].quantity + 'new qnty')
+                        
+                    }
+                }
+            }
+        var updatelist = JSON.parse(localStorage.getItem("productlist"));    
+        localStorage.setItem(newproduct.name, JSON.stringify(newproduct)); 
+        console.log(newproduct)
+        console.log("updatelist below")
+        
+        updatelist = [];
+        //console.log(updatelist)      
+        updatelist.push(newproduct);
+        console.log(updatelist)
+        console.log("kkk")
+        localStorage.removeItem("productlist")
+        localStorage.setItem("productlist", JSON.stringify(newproduct));
+        
+        window.location.href = "{% url 'bill:bill_billing' %}"
+        
+    }
+
+}
+
+</script>
+
+
+
+</html>

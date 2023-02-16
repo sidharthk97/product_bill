@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>product Bill</title>
+    <style>
+
+        #container{
+            width: 100%;
+            height: auto;
+            border: 2px solid red;
+            margin-bottom: 20px;
+        }
+
+        #container1{
+            height: 500px; 
+            width: 100 vh; 
+            border: 2px solid green;
+            text-align: center; 
+            vertical-align: middle;
+            align-items:center ;
+            margin: 10px;
+            font-size: larger;
+            display:grid;
+            padding: 20px;
+            grid-gap: 10px;
+            grid-template-rows: auto auto auto auto auto auto auto;
+            grid-template-columns: auto auto auto auto auto auto auto;
+
+        }
+
+        #container2{
+            width: 100 vh; 
+            height: auto;
+            border: 2px solid blue;
+            text-align: center; 
+            vertical-align: middle;
+            align-items:center ;
+            margin: 10px;
+            font-size: large;
+
+        }
+
+        #addtable{
+            border: 2px solid black; 
+            height: auto; 
+            width: 100%;
+        }
+
+        thead{
+            font-size: large;
+            font-weight: bold;
+        }
+
+        th,td{
+            border: 1px solid black;
+        }
+
+        #header{
+            /* border:2px solid black; */
+            grid-area: 1/1/2/8;
+            height: 100px;
+        }
+
+        #lname{
+            /* border:2px solid black; */
+            grid-area: 2/1/3/2;
+            font-size: larger;
+        }
+        #name{
+            border:2px solid black;
+            grid-area: 2/2/3/8;
+        }
+        #ldescription{
+            /* border:2px solid black; */
+            grid-area: 3/1/4/2;
+            font-size: larger;
+        }
+        #description{
+            border:2px solid black;
+            grid-area: 3/2/4/8;
+        }
+        #lcategory{
+            /* border:2px solid black; */
+            grid-area: 4/1/5/2;
+            font-size: larger;
+        }
+        #category{
+            border:2px solid black;
+            grid-area: 4/2/5/4;
+        }
+
+        #lsubcategory{
+            /* border:2px solid black; */
+            grid-area: 4/5/5/6;
+            font-size: larger;
+        }
+        #subcategory{
+            border:2px solid black;
+            grid-area: 4/6/5/8;
+            
+        }
+        #lweight{
+            /* border:2px solid black; */
+            grid-area: 5/1/6/2;
+            font-size: larger;
+        }
+        #weight{
+            border:2px solid black;
+            grid-area: 5/2/6/4;
+        }
+
+        #lunit{
+            /* border:2px solid black; */
+            grid-area: 5/5/6/6;
+            font-size: larger;
+        }
+        #unit{
+            border:2px solid black;
+            grid-area: 5/6/6/8;
+        }
+        #lquantity{
+            /* border:2px solid black; */
+            grid-area: 6/1/7/2;
+            font-size: larger;
+        }
+        #quantity{
+            border:2px solid black;
+            grid-area: 6/2/7/4;
+        }
+        #lamount{
+            /* border:2px solid black; */
+            grid-area: 6/5/7/6;
+            font-size: larger;
+        }
+        #amount{
+            border:2px solid black;
+            grid-area: 6/6/7/8;
+        }
+
+        #add{
+            /* border:2px solid black; */
+            grid-area: 7/1/8/8;
+        }
+
+        a{
+            color: black;
+            font-size: 15px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        #menu{
+            float: right;
+            border: 2px solid black;
+            border-radius: 10px;
+            margin-right: 20px;
+        }
+
+    </style>
+</head>
+
+<body onLoad="javascript:sinsert2()">
+
+<div id="container">
+    
+<form method="get" action="#">
+<div id="container1">
+       
+    <div id="header">
+        <button id="menu"><a href="{% url 'bill:bill_index' %}">Main Menu</a></button> 
+        <h1 style="text-align: center;">Add Product Details:</h1>    
+    </div>
+
+    <label id="lname" for="name">Product Name:</label>
+    <input name="name" type="text" id="name" placeholder="Enter your Product name" size="80" style="font-size: large;"/>
+    <br />
+
+    <label id="ldescription" for="description">Description:</label>
+    <textarea id="description" placeholder="type product description here" style="font-size:medium;"></textarea>
+
+    <label id="lcategory" for="category">Category:</label>
+    <div id="category">
+    <select name="category" id="category2" size="1" style="width:90%;">
+        <!--size here used to show size of list displayed-->
+        <option value=""  disabled="disabled" selected>Please select your category</option>
+        <!--disabled used to disable it and selected use to place pointer at it but no value sent to server-->
+        <option value="Electronics">Electronics</option>
+        <option value="Stationary">Stationary</option>
+        <option value="Clothing">Clothing</option>
+        <option value="Packaged food products">Packaged food products</option>
+    </select>
+    </div>
+
+    <label id="lsubcategory" for="subcategory">Sub Category:</label>
+    <div id="subcategory">
+    <select name="subcategory" id="subcategory2" size="1" style="width:90%;" >
+        <option value="" disabled selected>Please select your sub category for electronics category</option>
+        <option value="Computers">Computers</option>
+        <option value="Mobiles">Mobiles</option>
+        <!-- <option value="q3">Clothing</option>
+        <option value="q4">Packaged food products</option> -->
+    </select>
+    </div>
+
+    <label id="lweight" for="weight">Product Weight:</label>
+    <input name="weight" type="text" id="weight" placeholder="Enter weight" size="10" style="font-size: large;" />
+
+    <label id="lunit" for="unit">Unit:</label>
+    <div id="unit">
+    <select name="unit" id="unit2" size="1" style="width:90%;">
+        <option selected value="Kg">Kg (Kilograms)</option>
+        <option value="g">g (Grams)</option>
+        <option value="Lbs">Lbs (Pounds)</option>
+    </select>
+    </div>
+  
+    <label id="lquantity" for="quantity">Product Quantity:</label>
+    <input name="quantity" type="text" id="quantity" placeholder="Enter Quantity" size="10" style="font-size: large;" />
+
+    <label id="lamount" for="amount">Amount/piece:</label>
+    <input name="amount" type="text" id="amount" placeholder="Enter amount in Rs" size="15" style="font-size: large;"/>
+
+    <div id="add">
+        
+        <input type="button"  value="Add Product" style="height: 60px; width: 250px; 
+            border-radius: 10px;font-size: large; font-weight: bolder;" onclick="return sinsert()"/> 
+        <br />
+        
+    </div>   
+    
+
+
+</div>
+</form>
+
+<div id="container2">
+
+    <table id="addtable">
+        <thead>
+            <th>Id</th>
+            <th>Product Name</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Sub Cateory</th>
+            <th>Weight</th>
+            <th>Quantity</th>
+        </thead>
+    </table>  
+
+</div>
+<div id="clearlist" style="width: 100%; text-align: right;">
+    <br />
+    <input type="button"  value="clear all products from list" style="height: 40px; width: 250px;font-size: medium; 
+        border-radius: 10px; font-weight: bolder;margin-right: 40px;" onclick="return clearlist()"/> 
+    <br />
+</div> 
+
+</body>
+
+<script>
+
+function clearlist()
+{
+    localStorage.clear()
+    localStorage.clear()
+    var s_table=document.getElementById('addtable')
+            var rowCount = s_table.rows.length;
+            for (var i = rowCount - 1; i > 0; i--)
+             {
+                s_table.deleteRow(i);
+             }
+}
+
+function sinsert()
+    {   
+
+        var name = document.getElementById('name').value
+        var description = document.getElementById('description').value
+        var category = document.getElementById('category2').value
+        var subcategory = document.getElementById('subcategory2').value
+        var weight = parseFloat(document.getElementById('weight').value)
+        var quantity = parseInt(document.getElementById('quantity').value)
+
+        var unit = document.getElementById('unit2').value
+        var amount = parseFloat(document.getElementById('amount').value)
+
+        // unique ID generator code given below
+        var id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+
+        // form validation
+        var namepattern=/^[A-Z a-z 0-9]+$/
+        if(name == '')
+        {   
+            document.getElementById('name').placeholder='Enter the product name'
+            document.getElementById('name').style.border='2px solid red'
+        
+            return false
+        }
+        else
+        {   if (name.match(namepattern)==null) 
+            {
+                document.getElementById('name').placeholder='Name must contain only alphabets and numbers'
+                document.getElementById('name').style.border='2px solid red'
+                document.getElementById('name').value=''
+                return false
+            }
+            else
+            {   
+                document.getElementById('name').placeholder=''
+                document.getElementById('name').style.border='2px solid green'
+            }
+        }
+
+
+        if (description=='') 
+            {
+                document.getElementById('description').placeholder='Please enter Product description'
+                document.getElementById('description').style.border='2px solid red'
+                return false
+            }
+        else
+            {   
+                document.getElementById('description').placeholder=''
+                document.getElementById('description').style.border='2px solid green'
+            }
+
+
+        if((document.getElementById('category2').value)=="")
+        {   
+            
+            document.getElementById('category2').placeholder='Please select category'
+            document.getElementById('category2').style.border='2px solid red'
+        
+            return false
+            
+        }
+        else
+        {     
+            document.getElementById('category2').placeholder=''
+            document.getElementById('category2').style.border='2px solid green'                   
+        }
+
+
+        if((document.getElementById('subcategory2').value)=="")
+        {   
+            
+            document.getElementById('subcategory2').placeholder='Please select Sub category'
+            document.getElementById('subcategory2').style.border='2px solid red'
+        
+            return false
+            
+        }
+        else
+        {     
+            document.getElementById('subcategory2').placeholder=''
+            document.getElementById('subcategory2').style.border='2px solid green'                   
+        }
+
+
+        if((document.getElementById('unit2').value)=="")
+        {   
+            
+            document.getElementById('unit2').placeholder='Please select unit'
+            document.getElementById('unit2').style.border='2px solid red'
+        
+            return false
+            
+        }
+        else
+        {     
+            document.getElementById('unit2').placeholder=''
+            document.getElementById('unit2').style.border='2px solid green'                   
+        }
+
+
+        if(document.getElementById('weight').value == '')
+        {   
+            document.getElementById('weight').placeholder='Enter the product weight'
+            document.getElementById('weight').style.border='2px solid red'
+        
+            return false
+        }
+        else
+        {   if (isNaN(document.getElementById('weight').value)) 
+            {
+                document.getElementById('weight').placeholder='must contain only numbers'
+                document.getElementById('weight').style.border='2px solid red'
+                document.getElementById('weight').value=''
+                return false
+            }
+            else
+            {   
+                document.getElementById('weight').placeholder=''
+                document.getElementById('weight').style.border='2px solid green'
+            }
+        }
+
+        var quantitypattern=/^[0-9]+$/
+
+        if(document.getElementById('quantity').value == '')
+        {   
+            document.getElementById('quantity').placeholder='Enter the quantity'
+            document.getElementById('quantity').style.border='2px solid red'
+        
+            return false
+        }
+        else
+        {   if (document.getElementById('quantity').value.match(quantitypattern)==null) 
+            {
+                document.getElementById('quantity').placeholder='must contain only integer'
+                document.getElementById('quantity').style.border='2px solid red'
+                document.getElementById('quantity').value=''
+                return false
+            }
+            else
+            {   
+                document.getElementById('quantity').placeholder=''
+                document.getElementById('quantity').style.border='2px solid green'
+            }
+        }
+
+
+        if(document.getElementById('amount').value == '')
+        {   
+            document.getElementById('amount').placeholder='Enter the amount'
+            document.getElementById('amount').style.border='2px solid red'
+        
+            return false
+        }
+        else
+        {   if (isNaN(document.getElementById('amount').value)) 
+            {
+                document.getElementById('amount').placeholder='only numbers and decimal'
+                document.getElementById('amount').style.border='2px solid red'
+                document.getElementById('amount').value=''
+                return false
+            }
+            else
+            {   
+                document.getElementById('amount').placeholder=''
+                document.getElementById('amount').style.border='2px solid green'
+            }
+        }
+
+        
+
+
+        // storing to localstorage
+
+         var existinglist = JSON.parse(localStorage.getItem("productlist"));
+        if(existinglist == null) existinglist = [];
+
+        product={ id:id, name:name, description:description, 
+                 category:category, subcategory:subcategory, weight:weight,
+                 quantity:quantity, unit:unit, amount:amount
+               }    
+        
+        // if(name==null||name=="")
+        // {
+        //     console.log("null ifname")
+        // }
+        // else{
+        localStorage.setItem(product.name, JSON.stringify(product));       
+        existinglist.push(product);
+        localStorage.setItem("productlist", JSON.stringify(existinglist));
+        // }
+
+        //retrieve from localstorage
+
+        console.log(localStorage.getItem("productlist"))
+
+        newproductlist = localStorage.getItem("productlist");
+        if(newproductlist == null) 
+        {   
+            newproductlist = [];
+            newproduct = [];
+        }
+        else{           
+            console.log(JSON.parse(newproductlist))
+            newproduct= JSON.parse(newproductlist)
+        }
+        
+        console.log("enter if")
+
+            // given below codes and for loop is to remove repition of products in list
+            var s_table=document.getElementById('addtable')
+            var rowCount = s_table.rows.length;
+            for (var i = rowCount - 1; i > 0; i--)
+             {
+                s_table.deleteRow(i);
+             }
+
+        // add products to table id done by for loop given below
+        for (i = 0; i < newproduct.length; i++) 
+        {
+        
+        x = newproduct[i].name;
+              
+        var addtable=document.getElementById('addtable')
+        var add_row= addtable.insertRow()
+        cell1=add_row.insertCell(0)
+        cell2=add_row.insertCell(1)
+        cell3=add_row.insertCell(2)
+        cell4=add_row.insertCell(3)
+        cell5=add_row.insertCell(4)
+        cell6=add_row.insertCell(5)
+        cell7=add_row.insertCell(6)
+
+        cell1.innerHTML= newproduct[i].id;
+        cell2.innerHTML= newproduct[i].name;
+        cell3.innerHTML= newproduct[i].description;
+        cell4.innerHTML= newproduct[i].category;
+        cell5.innerHTML= newproduct[i].subcategory;
+        cell6.innerHTML= newproduct[i].weight;
+        cell7.innerHTML= newproduct[i].quantity;
+
+        } 
+
+    }
+function sinsert2()
+{
+    newproductlist = localStorage.getItem("productlist");
+    if(newproductlist == null) 
+        {   
+            newproductlist = [];
+            newproduct = [];
+        }
+    else{           
+            console.log(JSON.parse(newproductlist))
+            newproduct= JSON.parse(newproductlist)
+        }
+
+    for (i = 0; i < newproduct.length; i++) 
+        {
+        
+        x = newproduct[i].name;
+              
+        var addtable=document.getElementById('addtable')
+        var add_row= addtable.insertRow()
+        cell1=add_row.insertCell(0)
+        cell2=add_row.insertCell(1)
+        cell3=add_row.insertCell(2)
+        cell4=add_row.insertCell(3)
+        cell5=add_row.insertCell(4)
+        cell6=add_row.insertCell(5)
+        cell7=add_row.insertCell(6)
+
+        cell1.innerHTML= newproduct[i].id;
+        cell2.innerHTML= newproduct[i].name;
+        cell3.innerHTML= newproduct[i].description;
+        cell4.innerHTML= newproduct[i].category;
+        cell5.innerHTML= newproduct[i].subcategory;
+        cell6.innerHTML= newproduct[i].weight;
+        cell7.innerHTML= newproduct[i].quantity;
+
+        }
+        
+}
+
+</script>
+
+</html>
